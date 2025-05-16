@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나트랑 맛집 추천 (사진 2장, 지도 링크, 2분할)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+        }
+        header img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .main-content-wrapper {
+            padding: 10px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        h2 { 
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .restaurant-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .restaurant-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .image-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .image-container img {
+            display: block !important;
+            width: calc(50% - 5px) !important; 
+            height: auto !important;
+            aspect-ratio: 4 / 3 !important;
+            object-fit: cover !important;
+            border-radius: 0 !important;
+            border: none !important;
+            background-color: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .restaurant-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.25em;
+            color: #2980b9;
+        }
+        .restaurant-info {
+            flex-grow: 1;
+        }
+        .restaurant-info p {
+            font-size: 0.88em;
+            line-height: 1.55;
+            color: #495057;
+            margin-bottom: 6px;
+        }
+        .restaurant-info .info-label {
+            font-weight: 600;
+            color: #343a40;
+            margin-right: 5px;
+        }
+        .restaurant-info .description {
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .map-link {
+            font-size: 0.8em;
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+        .map-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .main-content-wrapper { padding: 20px; }
+            .container { padding: 25px; }
+            h1 { font-size: 2.2em; margin-bottom: 35px; }
+            h2 { font-size: 1.8em; padding-bottom: 10px; margin-top: 45px; margin-bottom: 25px; }
+            .restaurant-list { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .restaurant-card h3 { font-size: 1.4em; }
+            .restaurant-info p { font-size: 0.92em; }
+            .restaurant-info .description { font-size: 0.95em; }
+        }
+        @media (min-width: 1024px) {
+        }
+
+        @media print {
+    * {
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    html, body { 
+        width: 100% !important;
+        height: auto !important; 
+        background-color: #fff !important; 
+    }
+    html {
+        font-size: 9pt !important;
+        line-height: 1.25 !important;
+    }
+    body {
+        font-family: 'NanumGothic', '나눔고딕', sans-serif !important;
+        color: #000 !important;
+        padding-top: 2.5cm !important; 
+        padding-left: 0.7cm !important;
+        padding-right: 0.7cm !important;
+        padding-bottom: 0.7cm !important;
+    }
+
+    header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0.7cm !important; 
+        right: 0.7cm !important;
+        height: 2.5cm !important;
+        background-color: #fff !important; 
+        z-index: 99999 !important; 
+        border-bottom: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.1cm 0 !important; 
+    }
+
+    header img {
+        display: block !important;
+        max-width: 100% !important;
+        max-height: calc(2.5cm - 0.2cm) !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+
+    .main-content-wrapper,
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        background-color: #fff !important; 
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+    }
+
+    section {
+    }
+
+    /* 아래 두 규칙을 주석 처리하거나 삭제합니다. */
+    /*
+    section#downtown-restaurants {
+        page-break-before: auto !important;
+        padding-top: 3cm !important;
+    }
+    section#beach-restaurants {
+        page-break-before: auto !important;
+    }
+    */
+    section + section { /* Any section that is preceded by another section */
+        page-break-before: always !important; /* Will start on a new page */
+    }
+    
+    h1, h3 {
+        color: #000 !important;
+        page-break-after: avoid !important;
+        clear: both !important; 
+    }
+
+    h1 {
+        font-size: 15pt !important;
+        text-align: left !important;
+        border-bottom: none !important;
+        margin-top: 0.3cm !important; 
+        margin-bottom: -2.5cm !important;
+        padding: 0 0.2cm 1.5mm 0.2cm !important;
+
+    }
+
+     h2 {
+        font-size: 13pt !important;
+        border-bottom: none !important;
+        margin-top: 2.5cm !important;
+        margin-bottom: 0.2cm !important;
+        padding: 0 0.2cm 1mm 0.2cm !important;
+        position: relative !important;
+        z-index: 10 !important;
+        page-break-after: avoid !important;
+        color: #6d64e7 !important; /* 글자색 강제 */
+        
+    }
+
+    h3 {
+        font-size: 10pt !important;
+        margin-top: 0.2cm !important;
+        margin-bottom: 0.15cm !important;
+        padding: 0 !important; 
+    }
+
+    .restaurant-list {
+        grid-template-columns: 1fr !important;
+        gap: 0.3cm !important;
+        list-style: none !important; 
+    }
+
+    .restaurant-card {
+        page-break-inside: avoid !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0.2cm !important;
+        margin-bottom: 0.3cm !important;
+        overflow: hidden !important; 
+        width: 100% !important; 
+    }
+
+    .image-container {
+        display: flex !important;
+        gap: 3px !important;
+        margin-bottom: 0.2cm !important;
+        overflow: hidden !important;
+        width: 100% !important; 
+    }
+    .image-container img {
+        display: block !important; 
+        width: calc(50% - 1.5px) !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9 !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+        border: none !important;
+        background-color: #fff !important;
+    }
+
+    .restaurant-info p {
+        font-size: 8pt !important;
+        line-height: 1.2 !important;
+        margin-bottom: 1mm !important;
+        color: #000 !important;
+        word-wrap: break-word !important; 
+    }
+    .restaurant-info .info-label {
+        font-weight: 600 !important; 
+        color: #343a40 !important; 
+        margin-right: 3px !important;
+    }
+    .restaurant-info .description {
+        font-size: 8pt !important;
+        margin-top: 0.15cm !important;
+        color: #333 !important; 
+    }
+
+    .map-link {
+        font-size: 0.8em !important; 
+        color: #000 !important; 
+        text-decoration: underline !important;
+        margin-left: 3px !important;
+        word-break: break-all !important; 
+    }
+
+    img[src^="https://via.placeholder.com"] {
+        border: 1px dashed #ccc !important;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="main-content-wrapper">
+        <header>
+            <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더">
+        </header>
+        <div class="container">
+            <h1>내일투어 엄선 나트랑 추천 맛집</h1>
+
+            <section>
+                <h2>1. 베트남식 식당</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://blog-static.kkday.com/ko/blog/wp-content/uploads/1_wp_madam_phuong.jpg" alt="마담프엉 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzA1MDZfMjcz/MDAxNjgzMzQ5MDM3ODAy.1jFJ2k8vYkhzBcQFVN-UsuwAZAbd5cGIAZxXbq1zbDwg.WszY7OrjvXJ-SeQr2FVEuRVwwnuGKLG5dtEktfUgGmIg.JPEG.wlsgml850/IMG_8993.jpg?type=w800" alt="마담프엉 사진 2">
+                        </div>
+                        <h3>1. 마담프엉 (Madam Phuong)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 34f Nguyễn Thiện Thuật, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=12872498909067130557" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 11:00 ~ 오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 반쎄오, 넴루이</p>
+                            <p class="description"><span class="info-label">설명:</span> 통 베트남 요리를 깔끔한 분위기에서 즐길 수 있는 나트랑의 대표 맛집입니다. 특히 바삭한 반쎄오와 숯불 향이 살아있는 분짜는 현지인과 여행객 모두에게 인기가 높으며, 한글 메뉴판이 제공되어 주문도 편리합니다. </p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA1MjBfMTMg/MDAxNzE2MTgzOTIwODMz.qLfUxbWyhOW1NvxoIvzCPieI1cEBOTKux3govAZrHjkg.KB6OZIxVVe7Whn1i1HzwoWbWbPN-cyZN96l8wvf8D4kg.JPEG/IMG_6203.JPG?type=w800" alt="MẮM Restaurant 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA1MjBfNiAg/MDAxNzE2MTgzOTIxOTgx.y0_8U-h8SvJ5oNIOUU9eUj-kv_6QAqySXdA3Os3K8Ukg._taLBn89bZPmRwssGYlEstYSgW9x7Izg1H3CYCqQzk8g.JPEG/IMG_6239.JPG?type=w800" alt="MẮM Restaurant 사진 2">
+                        </div>
+                        <h3>2. 맘 레스토랑 (Mắm Restaurant)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 72 Nguyễn Thiện Thuật, Tân Lập, Nha Trang, Khánh Hòa 65000 베트남 <a href="https://maps.google.com/?cid=5954475042652748203" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 11:00 ~ 오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 중부 베트남 전통 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 전통 베트남 가정식을 현대적인 감각으로 재해석하여 제공하는 곳으로, 독특한 인테리어와 다양한 메뉴, 친절한 서비스로 많은 이들의 사랑을 받고 있습니다. 특히 소고기 베텔잎말이와 게살 짜조는 방문객들이 추천하는 인기 메뉴입니다. 냐짱에서 베트남의 진정한 맛과 문화를 경험하고 싶다면 방문해볼 가치가 있는 곳입니다.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://vnguide.co.kr/data/editor/2306/thumb-e06fb616a9ed43f29553abf90a20a06c_1687229322_6258_600x795.jpg" alt="촌촌킴 사진 1">
+                            <img src="https://image.withstatic.com/385/437/172/353a724ee439465ab0e6fb8e2df069e4_w1200_h1200.jpg?ext=webp" alt="촌촌킴 사진 2">
+                        </div>
+                        <h3>3. 촌촌킴 (Chuon Chuon Kim)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 89 Đ. Hoàng Hoa Thám, Lộc Thọ, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=11140388022201323735" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:30 ~ 오후 9:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 현지 가정식 스타일 베트남 음식</p>
+                            <p class="description"><span class="info-label">설명:</span> 현지 가정식 스타일의 베트남 음식을 저렴한 가격에 즐길 수 있어 한국인 여행객들에게 인기가 높습니다. 돼지갈비조림과 새우 마늘버터 볶음이 많은 방문객들이 추천하는 인기 메뉴입니다. </p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDAzMzBfMjQg/MDAxNzExNzkzNTA2MDcy.lWmmxJ1-6XLMi34KK2z5Y7yIooVhXrYZU_gBoUc2zvcg.mbm2cMWMHYiuLhqThpxoLauUtaW7mE8Y7TGKh-eObfYg.JPEG/SE-bcc84e6c-89ce-4a72-935f-aaea66f14e58.jpg?type=w800" alt="냐벱 사진 1">
+                            <img src="https://blog.kakaocdn.net/dn/ODqWi/btsIyICoh9g/jbL9qVGKVtAPe4TF7HBHB0/img.jpg" alt="냐벱 사진 2">
+                        </div>
+                        <h3>4. 냐벱 (Nhà Bếp Nha Trang)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 01 Đ. Ng. Đức Kế, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=14124871576522710851" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:30 ~ 오후 9:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 퓨전 베트남 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 크레이피시 콤보를 포함한 다양한 메뉴를 판매하고 있으며, 간이 자극적이지 않아 누구나 편하게 즐길 수 있습니다. 전반적으로 음식의 완성도가 높고, 세트 메뉴 구성이 실속 있어 식사 만족도가 높습니다. 호이안의 감성을 풍기는 인테리어와 깔끔한 서비스, 합리적인 가격으로 좋은 평가를 받고 있습니다.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzAyMTNfMjIw/MDAxNjc2Mjc1MzEzNzgz.S-083iOnBDlQ4GP5V4TByHYJaZ3ThmNp3YDLSHTgv10g.NTAzI6TJoU0qTLZOiZCgNe5loFu-nTo0z_2lBp18jCEg.JPEG.pro_editor/SE-f6029f9a-8f98-4c71-b7a9-6f00661a4b83.jpg?type=w800" alt="당반꾸엔 사진 1">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWaumjV2A1Z_jMYAxkB1JO7AfcwdBe9kfynvCGYrm2bFIvJcLPpJQ3LrJ_ZhuzvtorIjo&usqp=CAU" alt="당반꾸엔 사진 2">
+                        </div>
+                        <h3>5. 당반꾸엔 (Nem Nướng Đặng Văn Quyên)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 16A Lãn Ông, Xương Huân, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=9159456414976441065" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 7:30 ~ 오후 8:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 넴느엉 (돼지고기 소시지 구이)</p>
+                            <p class="description"><span class="info-label">설명:</span> 돼지고기를 다져 양념한 후 꼬치에 끼워 숯불에 구운 넴느엉이 대표 메뉴입니다. 쫄깃한 식감과 은은한 불향이 어우러져 깊은 풍미를 느낄 수 있습니다. TV 프로그램 짠내투어와 배틀트립에 소개되어 많은 사랑을 받고있는 곳입니다..</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://blog.kakaocdn.net/dn/m81rB/btsx1QX4t33/Izv54Yr3u7aaTuWYaPvLvK/img.jpg" alt="반미판 사진 1">
+                            <img src="https://media.triple.guide/triple-cms/c_limit,f_auto,h_2048,w_2048/b791c03b-5456-48ac-9b08-38f1530b9cd9.jpeg" alt="반미판 사진 2">
+                        </div>
+                        <h3>6. 반미판 (Bánh Mì Phan)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 164 Bạch Đằng, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=11479964705371581791" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 7:00 ~ 오후 9:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 종류의 반미</p>
+                            <p class="description"><span class="info-label">설명:</span> 반미 전문점으로 주문 즉시 따뜻하게 만들어 제공되며, 치킨, 미트볼, 치즈 스테이크 등 다양한 메뉴를 구성하고 있습니다. 작은 매장으로 운영되고 있어 간단한 식사나 간식으로 부담 없이 이용하기 좋습니다..</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2d/b1/f7/83/caption.jpg?w=900&h=500&s=1" alt="씀모이가든 사진 1">
+                            <img src="https://media.triple.guide/triple-cms/c_limit,f_auto,h_2048,w_2048/d8200cea-58d9-47e4-83ca-9f79e5f03bb6.jpeg" alt="씀모이가든 사진 2">
+                        </div>
+                        <h3>7. 씀모이가든 (Xom Moi Garden)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 144 Đ. Võ Trứ, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=256079995672603214" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 6:30 ~ 오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 베트남 현지 음식, BBQ, 해산물</p>
+                            <p class="description"><span class="info-label">설명:</span> 나나트랑 중심부에 위치한 1,500㎡ 규모의 복합 레스토랑 공간으로, 다양한 전문 식당이 입점해 있습니다. 베트남 가정식, BBQ, 쌀국수, 반미 등  다양한 음식을 즐길 수 있는 곳으로, 한국인 관광객에게 특히 인기 많은 곳입니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>2. 한식당</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://media.triple.guide/triple-cms/c_limit,f_auto,h_1024,w_1024/6e18cb05-b30b-43e3-aa6a-4481eb060a2a.jpeg" alt="안키친 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzA4MDFfMjAw/MDAxNjkwODk2MjcxMjQ3.CuwHLgVSy43h8-GaBZoPBLbMTN5PfPr5Fz7aq9-E_ygg.8GWltNsvfgKuBTnGhKUolhSbZ5KCwScZjBROIO_xtVYg.JPEG.idealjinious/%EB%82%98%ED%8A%B8%EB%9E%91_%EC%97%AC%ED%96%89_%ED%95%9C%EC%8B%9D%EB%8B%B9_%EC%95%88%ED%82%A4%EC%B9%9C_17.jpg?type=w800" alt="안키친 사진 2">
+                        </div>
+                        <h3>1. 안키친 (An Kitchen)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 4 Đ. Ng. Đức Kế, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=11327864586911593900" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 11:00 ~ 오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 삼겹살 무한리필</p>
+                            <p class="description"><span class="info-label">설명:</span> 삼겹살, 목살, 항정살을 무제한으로 즐길 수 있는 곳으로 유명한 한식당으로 김치찌개, 된장찌개, 냉면 등 다양한 한식 메뉴도 준비되어 있어 한국의 맛을 그대로 느낄 수 있습니다. </p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzA3MTFfMjIw/MDAxNjg5MDc3Mjg5MjM5.dFwVwl91fF_QlxXAze36ogKh-Wtw_g_ROnsz2RKa8WMg.zYxQ5RooaiNQQwKZjQkolPrF62WhGdKYXlQSfdivq7Ag.JPEG.alilyxxoo/IMG_9208.JPG?type=w800" alt="서울식당 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzA3MTFfMTA5/MDAxNjg5MDc0OTM0NDIy.L63i-0hIb4nNGftm-k93GEu2kFw4r-MgHZxE-09y_ocg.LfYfioz4nf9sfVaqYZduJD3KpFwTxhrvdn8iXcD6cnAg.JPEG.alilyxxoo/IMG_7637.JPG?type=w800" alt="서울식당 사진 2">
+                        </div>
+                        <h3>2. 서울식당 (Nhà hàng Seoul)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 베트남 650000 Khánh Hòa, Nha Trang, Phước Hải, Khu đô thị Hà Quang 2, Lê Hồng Phong, STH 43 <a href="https://maps.google.com/?cid=17411718250879057390" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:00 ~ 오후 9:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 한식</p>
+                            <p class="description"><span class="info-label">설명:</span> 삼겹살, 불고기, 김치찌개, 된장찌개 등 다양한 한식 메뉴를 판매하고 있으며, 정갈한 밑반찬과 함께 한국의 맛을 그대로 느낄 수 있습니다. 깔끔한 환경의 매장으로 편안한 식사가 가능한 곳입니다.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA3MjRfMTQ0/MDAxNzIxODE4NDE0Nzcw.hJzUUDYTOc1cKWjjpV3Em8TGEeOh4Ds_97HxARJ7t6kg.3pb02WM8ai_ujqG7iFEEBaXgSbtCwd8K_4UkWdgTDK8g.JPEG/3.JPG?type=w800" alt="베테랑 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA3MjRfMTk3/MDAxNzIxODE4NDE0NzEw.EUUdD--4jNVwwjQqCn3ZGf9IGUhsJWK9KwCBv3e89uIg.Imc5i8W2s_lteAB0dp80j2phmXPoviaLocFOlfRzID4g.JPEG/9.JPG?type=w800" alt="베테랑 사진 2">
+                        </div>
+                        <h3>3. 베테랑</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 126B Đ. Hồng Bàng, Tân Lập, Nha Trang, Khánh Hòa 57100 베트남 <a href=https://www.google.com/search?q=%EB%B2%A0%ED%85%8C%EB%9E%91+%EB%82%98%ED%8A%B8%EB%9E%91&oq=%EB%B2%A0%ED%85%8C%EB%9E%91+%EB%82%98%ED%8A%B8%EB%9E%91&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgYIARBFGDzSAQgxMzk0ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8 target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 11:00 ~ 23:00.</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 구이 메뉴 (특수 부위 모듬 세트)</p>
+                            <p class="description"><span class="info-label">설명:</span> 나트랑 시내 중심부에 위치한 베테랑은 고품질의 숙성된 고기와 훌륭한 서비스로 알려진 한식 바비큐 전문점입니다. 매장은 세련되고 넓은 공간에 에어컨 시설을 갖추고 있으며, 편안한 식사를 위해 6개의 단독룸도 마련되어 있습니다.신선한 재료를 사용한 요리와 친절하고 전문적인 직원들의 서비스는 방문객들에게 높은 만족도를 제공하며, 트립어드바이저에서 'Travelers' Choice'로 선정되기도 했습니다. </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>3. 시푸드 전문 레스토랑</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzEwMDhfMjU3/MDAxNjk2NzQ1MTcwNTIw.YGqPXUutZnfA7ipdx7RE5rdyf1b_ejjxyGdDJrsClY8g.abHcqOhMVPqBogtME_UM8imr6hiXAI6I7V3a1GSIIRcg.JPEG.1978mm/SE-c8abcf3e-2be0-46f6-ace2-73b2440831ac.jpg?type=w800" alt="JJ씨푸드 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDAzMjRfMTk2/MDAxNzExMjkwMDgxMDYx.zIeRcl_e4j6OSsVZ00Gp4-WtmnSbw2GWCp_svX88i9gg.eOskhvHRe32IYxDN1gQuATwTY42tODjxYRrZClrE4p4g.JPEG/%EB%B2%A0%ED%8A%B8%EB%82%A8%EB%82%98%ED%8A%B8%EB%9E%91%EB%A7%9B%EC%A7%91%EB%A6%AC%EC%8A%A4%ED%8A%B8_04.jpg?type=w400" alt="JJ씨푸드 사진 2">
+                        </div>
+                        <h3>1. JJ씨푸드 (JJ Seafood)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 20 Nguyễn Thiện Thuật, Tân Lập, Nha Trang, Khánh Hòa 65000 베트남 <a href="https://maps.google.com/?cid=6499917869424875767" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:00 ~ 오후 11:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 랍스터, 각종 해산물 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 관광객들에게 특히 인기 있는 곳으로, 다양한 종류의 신선한 해산물을 맛볼 수 있습니다. 수족관에서 직접 해산물을 골라 원하는 방식으로 조리해 먹을 수 있다는 장점이 있습니다.에어컨은 없지만, 대형 선풍기가 가동되어 더위를 식혀줍니다.대표 메뉴는 마늘 버터 소스를 발라 구운 랍스터로, 신선한 랍스터 살의 탱글함과 육즙을 느낄 수 있어 많은 사랑을 받고 있습니다.그 외에도 치즈가리비 구이, 해물죽 등 다양한 해산물 요리를 즐길 수 있습니다.    </p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmTPIxHWnrOUoGZ7t-AoPqjFNeaeW544rWag&s" alt="빈산 사진 1">
+                            <img src="https://blog.kakaocdn.net/dn/brnpcB/btsCEKTCIJX/qs2iPhCUFEvJtE1vSkZ1q0/img.jpg" alt="빈산 사진 2">
+                        </div>
+                        <h3>2. 빈산 레스토랑 (Nhà Hàng Vịnh Xanh )</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span>  03 Nguyễn Thị Minh Khai, Lộc Thọ, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://www.google.com/maps/place/Nh%C3%A0+H%C3%A0ng+V%E1%BB%8Bnh+Xanh+-+%EB%B9%88%EC%82%B0+%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91/@12.2386886,109.1923817,17z/data=!3m1!4b1!4m6!3m5!1s0x31706700720f9d99:0x1f7f59a1cd75322b!8m2!3d12.2386834!4d109.1949566!16s%2Fg%2F11xcwhbkd2?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 7:30 ~ 오후 9:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 조개, 해산물 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> JJ씨푸드와 함께 나트랑 대표 해산물 맛집으로, 다양한 조개와 해산물 요리를 즐길 수 있음.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNTAxMDdfNDAg/MDAxNzM2MjU4NTUyMjY1.BFwUlGcXyDsgw62f2fZ2wxCEzsuMAxIMAfllnYfMvqsg.5lo9yqg5vdAhJb_g2Sh1O9emlQJeyV8jFmZgegvFXbgg.JPEG/IMG%EF%BC%BF6639.JPG?type=w800" alt="라라씨푸드 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA5MTRfNCAg/MDAxNzI2MjcxNTY2MDcw.9zyBMPEkP3vv7WjWQFJOOZiU_-Ctq5C4Ri6uz6Evdh0g.SWIzI5zdwUSzy_KhOhA0KzLeixwpfIwhWFxPcjRIekEg.JPEG/%EB%82%98%ED%8A%B8%EB%9E%91%EB%A7%9B%EC%A7%91.jpg?type=w800" alt="라라씨푸드 사진 2">
+                        </div>
+                        <h3>3. 라라씨푸드 (Lala Seafood)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 109B Đ. Hồng Bàng, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://www.google.com/maps/place/%EB%9D%BC%EB%9D%BC%EC%94%A8%ED%91%B8%EB%93%9C/@12.2394292,109.1886842,17z/data=!3m1!4b1!4m6!3m5!1s0x317067003573d021:0x2dea456aaab5fd17!8m2!3d12.239424!4d109.1912591!16s%2Fg%2F11y65t96lh?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 11:00 ~ 오후 10:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 신선한 해산물 (다양한 요리법)</p>
+                            <p class="description"><span class="info-label">설명:</span> 현지인과 관광객 모두에게 인기 있는 해산물 전문점. 신선한 재료와 다양한 요리법이 장점.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://blog.kakaocdn.net/dn/cjRrtV/btsDXaJBe9H/xWfKJnKBTWvxbtiznC2jlK/img.png" alt="엇히엠 사진 1">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU48kef7XCWgSwQE9RLPOlXaNFScBVx7VhZg&s" alt="엇히엠 사진 2">
+                        </div>
+                        <h3>4. 엇히엠 (Ớt Hiểm)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span>43 Nguyễn Thị Minh Khai, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남 <a href="https://www.google.com/maps/place/%EC%97%87%ED%9E%88%EC%97%A0/@12.2382082,109.1895787,17z/data=!3m1!4b1!4m6!3m5!1s0x317067768645d6f1:0x36888c3ab5446f6a!8m2!3d12.238203!4d109.1921536!16s%2Fg%2F11kk0_3gq6?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 8:00 ~ 오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 신선한 해산물 요리 (매운맛)</p>
+                            <p class="description"><span class="info-label">설명:</span> 신선한 해산물 요리가 일품으로, 매운맛을 좋아하는 한국인에게 특히 추천</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://blog.kakaocdn.net/dn/CgyUr/btsML8KE6o5/3E38b6K8fdDteDUOpdxjo0/img.jpg" alt="꽌안응온 사진 1">
+                            <img src="https://blog.kakaocdn.net/dn/bQeIbM/btszKDCUoc8/xaert5fVMxt47ftb8hQumK/img.jpg" alt="꽌안응온 사진 2">
+                        </div>
+                        <h3>5. 꽌옥응언 (Quán Ốc Ngon)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 34/2/15 Nguyễn Thiện Thuật, Tân Lập, Nha Trang, Khánh Hòa 650000 베트남<a href="https://www.google.com/maps/place/Qu%C3%A1n+%E1%BB%90c+Ngon/@12.2366743,109.1882777,17z/data=!3m1!4b1!4m6!3m5!1s0x317067b72dbaaaf9:0x1c6c6390158ba86a!8m2!3d12.2366691!4d109.1931486!16s%2Fg%2F11ghltbw6c?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:00 ~ 오후 11:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 신선한 해산물 요리 (숯불구이)</p>
+                            <p class="description"><span class="info-label">설명:</span> 가격이 저렴하고 다양한 메뉴를 맛볼 수 있습니다. 랍스터, 새우, 조개, 가리비, 버터 옥수수, 모닝글로리 등이 인기 메뉴입니다. 메뉴는 '조리 방법 + 세부 조리 방법'으로 구성되어 있으며, 한국어가 가능한 직원이 있어 주문이 용이합니다. 현금 결제만 가능합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>4. 깜란지역</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDEyMTJfNjAg/MDAxNzMzOTgwNzMxMjE0.sBsjqiE8Zd34w4CS8SpwH_9HAWb3TmD7TcvsNuNxEcgg.Tt4_kli7OGdybfudTn8vw4mrMedLg85IJRwc9vkYRdEg.JPEG/002.jpg?type=w800" alt="깜란스푼 Spoon 사진 1">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA5MTJfMTc1/MDAxNzI2MTIzMTExNzI3.mO5AbPW0oirCXbNfo-DszIc79C0m_E36SYxEH34MU8Mg.RQM81GGzNB8Aqu8ISqGqQZw2z-oKSOD3F7B22M3Ummog.JPEG/%EB%82%98%ED%8A%B8%EB%9E%91_%EA%B9%9C%EB%9E%80-14.jpg?type=w800" alt="깜란스푼 Spoon 사진 2">
+                        </div>
+                        <h3>1. 깜란스푼 Spoon (깜란스푼 Spoon)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> shop villa the arena, Cam Hải Đông, Cam Ranh, Khánh Hòa 650000 베트남 <a href="https://maps.google.com/?cid=801331906817755461" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:30 ~ 오후 9:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 현지 요리, 해산물</p>
+                            <p class="description"><span class="info-label">설명:</span> 깜란 지역에 위치한 식당으로, 아레나 리조트 인근에서 다양한 메뉴를 즐길 수 있습니다.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2d/02/1c/d5/seafood-monguoc-restaurant.jpg?w=900&h=-1&s=1" alt="하이산 몽억 사진 1">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKKfqWb662y3032dPnIUGLRBnpI_VU1uevug&s" alt="하이산 몽억 사진 2">
+                        </div>
+                        <h3>2. 하이산 몽억 (HẢI SẢN MỘNG ƯỚC)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 25XV+CC, Cam Hải Đông, Cam Lâm District, Khánh Hòa, 베트남 <a href="https://www.google.com/maps/place/H%E1%BA%A2I+S%E1%BA%A2N+M%E1%BB%98NG+%C6%AF%E1%BB%9AC+(+Seafood+MongUoc+-+MongUoc+BBQ+-+Hope+Seafood+-+%ED%9D%AC%EB%A7%9D%ED%95%B4%EC%82%B0%EB%AC%BC)/@12.048536,109.1909591,17z/data=!3m1!4b1!4m6!3m5!1s0x31708b2995c542bf:0xab331717b98b34f3!8m2!3d12.0485308!4d109.193534!16s%2Fg%2F11pz1qz7f6?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 9:00 ~ 오후 10:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 해산물, BBQ</p>
+                            <p class="description"><span class="info-label">설명:</span> 깜란의 해산물 전문점으로, 신선한 해산물과 BBQ를 맛볼 수 있습니다. (Hope Seafood, 희망해산물)</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA5MTZfMzQg/MDAxNzI2NDU3NTkyNTYy.98iT97EoxraiLTfVpF-GBhLNrL8PzT43mxB8Ygw4XBMg.rQ8ZN5a05rA5c0vK6BrXBRJr80myIeoZ3ZFtl7z2kRog.JPEG/240916_%EB%82%98%ED%8A%B8%EB%9E%91%EC%97%A0%EC%96%B4%EC%9D%B4-4.jpg?type=w800" alt="엠어이 깜란 em oi 사진 1">
+                            <img src="https://media.triple.guide/triple-cms/c_limit,f_auto,h_1024,w_1024/32d5d9c2-931a-4e79-a5bf-8abb8663fed9.jpeg" alt="엠어이 깜란 em oi 사진 2">
+                        </div>
+                        <h3>3. 엠어이 깜란 (Em Ơi Cam Ranh)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 39 Đường Phạm Văn Đồng, Cam Hải Tây, Cam Lâm, Khánh Hòa 57600 베트남 <a href="https://www.google.com/maps/place/%EC%97%A0%EC%96%B4%EC%9D%B4+%EA%B9%9C%EB%9E%80+em+oi/@12.0760292,109.1657333,17z/data=!3m1!4b1!4m6!3m5!1s0x3170f5e04f5b453d:0xfea3b2d452aabc31!8m2!3d12.076024!4d109.1683082!16s%2Fg%2F11w7pglfyb?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 10:30 ~ 오후 11:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 베트남 요리, 해산물</p>
+                            <p class="description"><span class="info-label">설명:</span> 깜란 지역에 위치한 식당으로, 다양한 베트남 현지 음식을 제공합니다.</p>
+                        </div>
+                    </div>
+                
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://eogiobaidai.com/wp-content/uploads/2022/06/f8f0142d2e06ed58b417-1.jpg" alt="에오 죠 바이 자이 사진 1">
+                            <img src="https://eogiobaidai.com/wp-content/uploads/2022/06/76161650084ecb10925f-1.jpg" alt="에오 죠 바이 자이 사진 2">
+                        </div>
+                        <h3>4. 에오 죠 바이 자이 (Eo Gió Bài Dài Seafood Restaurant)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 458W+V8, Cam Hải Đông, Cam Lâm District, Khánh Hòa, 베트남 <a href="https://www.google.com/maps/place/eo+gio+bai+dai+seafood+restuant/@12.1525946,109.1159554,12.83z/data=!4m6!3m5!1s0x317061b328b94e59:0xd382fd9f18bcdf54!8m2!3d12.1171937!4d109.1959996!16s%2Fg%2F11sdz2hltq?entry=ttu&g_ep=EgoyMDI1MDUxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 매일 오전 6:00 ~ 오후 11:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 해산물 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 깜란 바이자이 해변 근처의 해산물 전문 레스토랑입니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+    </div>
+</body>
+</html>
