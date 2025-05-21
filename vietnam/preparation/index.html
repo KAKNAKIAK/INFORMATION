@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여행안내문</title>
+    <style>
+        body {
+            font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 웹 보기용 배경 */
+            -webkit-print-color-adjust: exact; /* Chrome, Safari 등에서 배경색 및 색상 인쇄 강제 */
+            color-adjust: exact; /* 표준 속성 */
+        }
+        .page {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height (내용에 따라 늘어남) */
+            padding: 15mm; /* 여백 */
+            margin: 10mm auto; /* 화면 중앙 정렬 */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* 화면 보기용 그림자 */
+            box-sizing: border-box;
+        }
+        .header-logo {
+            width: 100%;
+            max-height: 60px; /* 로고 높이 조절 */
+            object-fit: contain; /* 이미지 비율 유지 */
+            display: block;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        h1, h2, h3, h4 {
+            color: #333;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 22pt; text-align: center; margin-bottom: 1em; }
+        h2 { font-size: 18pt; color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 0.2em;}
+        h3 { font-size: 14pt; color: #333; margin-top: 1.2em; }
+        h4 { font-size: 12pt; color: #555; font-weight: bold; margin-top:1em;}
+
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 5px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        p {
+            margin-bottom: 1em;
+            font-size: 10pt;
+        }
+        strong {
+            color: #d9534f; /* 강조 색상 */
+        }
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: calc(297mm - 30mm - 70px); /* 페이지 높이 - 상하패딩 - 헤더높이(근사치) */
+        }
+        .cover-page h1 { font-size: 28pt; margin-top: 0; }
+        .cover-page .sub-title { font-size: 18pt; margin-bottom: 30px; }
+        .cover-page .main-title { font-size: 36pt; font-weight: bold; margin-bottom: 50px;}
+
+        .image-placeholder {
+            width: 80%;
+            min-height: 150px;
+            background-color: #f5f5f5;
+            border: 1px dashed #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            padding: 10px;
+            color: #777;
+            font-style: italic;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffeeba;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 9pt;
+        }
+        .small-text {
+            font-size: 9pt;
+            color: #555;
+        }
+
+        /* 인쇄 설정 */
+        @media print {
+            body {
+                background-color: white;
+            }
+            .page {
+                margin: 0;
+                padding: 15mm; /* 실제 인쇄 여백으로 조절 */
+                box-shadow: none;
+                page-break-after: always; /* 각 .page div 뒤에 페이지 나눔 */
+                width: 100%; /* 용지 너비에 맞춤 */
+                height: auto; /* 내용에 따라 높이 자동 조절 */
+                min-height: 0; /* min-height 초기화 */
+            }
+            .page:last-child {
+                page-break-after: auto; /* 마지막 페이지는 나눔 없음 */
+            }
+            .header-logo {
+                /* 인쇄 시 헤더 이미지가 매 페이지 상단에 보이도록 하려면 복잡한 CSS나 JS가 필요.
+                   여기서는 각 페이지 div 시작에 수동으로 삽입하는 방식을 사용. */
+            }
+            .image-placeholder {
+                background-color: #fafafa; /* 인쇄 시 조금 더 연하게 */
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 페이지 1: 표지 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <div class="cover-page">
+            <h1 style="font-size: 20pt; margin-bottom:10px;">설레는 여행의 시작</h1>
+            <div class="image-placeholder">
+              <img src="https://www.naeiltour.co.kr/images/web/%EC%97%AC%ED%96%89%EC%A4%80%EB%B9%84%20%EC%95%88%EB%82%B4%EB%AC%B8_%ED%91%9C%EC%A7%80_%EB%B2%A0%ED%8A%B8%EB%82%A8.png" alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+            <p class="main-title">여행 준비 안내문</p>
+        </div>
+    </div>
+
+    <!-- 페이지 2: 머리말 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h2>머리말</h2>
+        <p>소중한 여행예약을 맡겨 주셔서 진심으로 감사드립니다다.</p>
+       <p>이제 중요한 준비는 모두 마무리되었습니다.</p>
+<p>하지만, 진짜 여행은 이제부터 시작입니다.</p>
+<p>실제 여행 출발 전 최종 점검, 현지에서의 빠른 적응, 그리고 여행 후 마무리까지</p>
+<p>각 단계에서 필요한 핵심 정보를 이 안내서에 담았습니다.</p>
+<p>여정의 모든 순간마다 내일투어가 든든하게 곁에서 함께하겠습니다.</p>
+        <p>여행의 각 단계별로 구체적인 팁과 실전 노하우를 확인하며,</p>
+<p>내일투어의 지원을 믿고 더욱 자신 있게 여행을 즐기세요.</p>
+<p>이 안내서가 당신의 든든한 길잡이가 되어,</p>
+<p>여행의 시작부터 끝까지 내일투어가 함께한다는 든든함을 느끼실 수 있기를 바랍니다.</p>
+        <div class="image-placeholder">
+              <img src="https://www.naeiltour.co.kr/images/web/Gemini_Generated_Image_1i76pk1i76pk1i76.png" alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+    </div>
+
+    <!-- 페이지 3: I. 여행 준비 (출발 전) - 항공 예약 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h2>I. 여행 출발 전 준비사항</h2>
+
+        <h3>✈️ 가장 중요한 항공 예약, 한번 더 꼼꼼하게 확인</h3>
+        <div class="image-placeholder">
+              <img src="https://blog.kakaocdn.net/dn/cIMMW3/btqC5n4FS4V/meK1zOSOGqEeqnGrUivpl1/img.png" alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+        <h4>항공예약 기초 확인</h4>
+        <ul>
+            <li>전자항공권 상 영문 이름 철자가 여권과 정확히 일치하는지 반드시 재차 확인해야 합니다.
+            <br><strong>**불일치 시 바로 담당자에게 확인을 합니다** </strong></li>
+            <li>출발 및 도착 날짜와 시간(현지 시각 기준)을 재확인합니다.</li>
+            <li>예약한 항공편명과 이용할 공항 터미널 번호도 확인합니다.</li>
+        </ul>
+
+        <h4>항공 예약 기타사항 확인</h4>
+        <ul>
+            <li>무료 위탁 수하물 허용량(개수, 무게)과 기내 반입 가능 수하물 규격(크기, 무게)을 항공사 홈페이지 혹은 담당자게게 미리 확인합니다.
+                <ul>
+                    <li class="small-text">일반석 기준 보통 1인 15kg~23kg 정도이나, 항공사나 예약사항에 따라 다르므로 개별 확인이 필수입니다.</li>
+                    <li class="small-text">규정 초과 시 추가 요금이 발생합니다. 수화물 추가관련 문의가 있으면 담당자에게 연락 합니다.</li>
+                </ul>
+            </li>
+            <li>이용하는 항공사 앱을 설치하면 실시간 출도착 정보, 게이트 변경 등 알림을 받을 수 있어 편리합니다.</li>
+            <li>출발 전 이용하려는 항공사 마일리지 프로그램에 미리 회원가입을 해두는 것이 좋습니다.
+                <ul>
+                    <li class="small-text">저가 항공사는 마일리지 프로그램이 없는 경우가 많으니 출발 전 확인이 필요합니다.</li>
+                </ul>
+            </li>
+        </ul>
+
+         <h4>항공편 지연/취소 대처법</h4>
+        <ul>
+            <li>항공사 사정으로 출발이 지연되거나 예고 없이 취소되는 경우, 최우선으로 공항의 해당 항공사 카운터에서 다음 이동 항공편에 대한 안내를 받아야 합니다.</li>
+            <li>만약 개인 사정으로 항공기를 놓친 경우(No-Show 포함), 해당 항공권은 환불되지 않으며, 남은 여정의 모든 항공편이 취소될 수 있고 항공사로부터 별도의 위약금이 부과될 수 있습니다.</li>
+            <li>상기 상황 발생시 담당자에게 연락 부탁드립니다.</li>
+        </ul>
+    </div>
+
+    <!-- 페이지 4: 체크인, 환전 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h3>🛂 체크인, 나에게 맞는 방법은?</h3>
+        <div class="image-placeholder">
+              <img src="https://cdn.prestigegorilla.net/post/263/post_top_img/3635/view_top_bg.jpg " alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+        <h4>온라인 체크인</h4>
+        <ul>
+            <li>보통 출발 24~48시간 전부터 가능합니다.</li>
+            <li>오픈 시점에 맞춰 진행하면 원하는 좌석을 선점할 확률이 높습니다.</li>
+            <li>여권 정보 입력이 필요할 수 있으니 미리 준비합니다.</li>
+            <li>완료 후 발급된 모바일 탑승권(QR코드)을 캡처해두거나 인쇄합니다.</li>
+             <ul>
+             <li class="small-text">항공사나 예약사항에 따라 온라인체크 가능 여부가 상이하므로 담당자에게 확인 부탁드립니다</li>
+                    
+            </ul>
+        </ul>
+             <h4>공항 체크인</h4>
+        <ul>
+            <li>최소 출발 2~3시간 전, 여유롭게는 3시간 전 공항 도착을 권장합니다.</li>
+            <li>해당 항공사 카운터를 찾아 여권과 이티켓을 제시합니다.</li>
+            <li>위탁 수하물이 있다면 온라인 체크인을 했더라도 수하물 전용 카운터(Bag Drop)에 방문해야 합니다.</li>
+        </ul>
+                <p class="warning"><strong>주의:</strong> 온라인 체크인 시 모바일 탑승권이 일반적이나, 일부 공항이나 항공사는 실물 탑승권을 요구할 수 있습니다. 공항 키오스크나 카운터에서 재확인하는 것이 안전합니다.</p>
+ </div>
+ <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h3>💴 환전, 똑똑하게 준비하기</h3>
+        <div class="image-placeholder">
+              <img src="https://i.namu.wiki/i/ol7kArsTUjJPaQwSI5kiwFmM-MZPL7VOAI_uBj_HyGBPbkCMhBwjbbmFDxfT3m4H-PKqr0JEHd0fdiKCeryWgw.webp" alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+        <h4>현금과 카드의 적절한 분배</h4>
+        <ul>
+            <li>전체 예산 중 현금 비중은 50~70% 내외로 계획합니다.</li>
+            <li>베트남 동(VND)으로 환전하실 때, 일반적으로 미국 달러(USD)로 먼저 준비하신 후 베트남 현지에서 다시 동으로 바꾸시는 것이 보편적인 방법입니다. 이 방식은 현지에서 더 나은 환율을 적용받을 수 있는 가능성이 있기 때문에 많은 여행객들이 선호하는 경향이 있습니다. </li>
+            <li>현지 교통비, 길거리 음식, 소규모 상점 등 카드 결제가 어려운 곳이 많으니 이 점 참고 부탁드립니다</li>
+        </ul>
+        <h4>환전 방법별 장단점</h4>
+        <ul>
+            <li><strong>은행 앱 환전:</strong> 주거래 은행 앱의 환전 서비스를 이용하면 우대 환율과 편리한 수령이 가능합니다.</li>
+            <li><strong>공항 환전:</strong> 편리하나 환율이 불리한 경우가 많으니 소액만 이용하는 것을 추천합니다.</li>
+            <li><strong>해외 직접 환전:</strong> 현지 은행이나 공식 환전소를 이용하면 좋은 환율을 적용받을 수 있습니다.</li>
+        </ul>
+        <h4>카드 사용 팁</h4>
+        <ul>
+            <li>해외 사용 가능 비자(Visa), 마스터(Master) 카드 등을 2개 이상 준비하여 분산 보관합니다.</li>
+            <li>여행지별로 적합한 트래블카드는 다를 수 있습니다. 따라서 여행 전 목적지에 맞는 카드를 미리 확인하면 더욱 편리하고 경제적인 여행을 즐길 수 있습니다.</strong></li>
+            <li>현지 ATM 출금도 비상시 유용합니다. 이용 전 카드사 해외 ATM 수수료와 현지 ATM 자체 수수료를 확인해야 합니다.</li>
+            <li>가급적 은행 소속 ATM을 이용하는 것이 안전합니다.</li>
+        </ul>
+    </div>
+
+    <!-- 페이지 5: 짐 꾸리기 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h3>🎒 짐 꾸리기, 이것만은 꼭!</h3>
+        <div class="image-placeholder">
+              <img src="https://cdn.tourtoctoc.com/news/photo/202305/518_2760_1833.jpg" alt="설명" style="width:70%; height:auto; object-fit:cover;">
+             </div>
+        <h4>필수 서류 및 개인 물품</h4>
+        <ul>
+            <li><strong>필수 서류:</strong> 여권(사본 별도 보관), 비자(필요시), 항공권(이티켓), 숙소 바우처(전자바우처) 등 </li>
+            <li><strong>결제 수단:</strong> 현지 화폐(소액권 위주), 해외 사용 가능 신용/체크카드(2개 이상)</li>
+            <li><strong>전자 기기:</strong> 스마트폰, 보조배터리, 충전기 등등 </li>
+              <li class="small-text">베트남은 우리나라와 사용전압이 동일합니다.</li>
+            <li><strong>의류 및 세면도구:</strong> 여행 기간, 날씨, 활동을 고려하여 준비</li>
+            <li><strong>상비약:</strong> 개인 복용약, 해열/진통제, 소화제, 멀미약, 반창고 등</li>
+        </ul>
+
+        <h4>위탁 수하물 <strong>절대 금지</strong> 품목</h4>
+        <p>다음 물품은 절대로 위탁 수하물로 보내지 마십시오. <strong>반드시 직접 기내에 휴대하고 탑승해야 합니다.</strong></p>
+        <ul>
+            <li>현금, 여권(및 사본)</li>
+            <li>각종 티켓(항공권, 기차표 등)</li>
+            <li>호텔/투어 바우처, 여행 일정표</li>
+            <li>고가 전자기기(카메라, 노트북, 태블릿 등)</li>
+            </ul>
+            <h4>짐 꾸리기, 이것만은 꼭! <strong>여권 관리 철저히 하기</strong></h4>
+        <ul>
+            <li>출발일 기준 여권 유효기간이 <strong>6개월 이상</strong> 남아있는지 다시 확인해야 입국이 가능합니다.</li>
+            <li>단수여권(긴급여권)은 무비자 입국이 불가 할 수 있으니 미리 확인 합니다.</li>
+            <li>여권 페이지가 찢어지거나(절취), 낙서, 물/음료 얼룩, 관광지 기념 스탬프 날인 등으로 훼손된 경우 출입국이 거절될 수 있으니 항상 깨끗하게 보관해야 합니다.</li>
+        </ul>
+         <h4> <strong>소아 동반 입국 시 필요 서류 안내</strong></h4>
+        <ul>
+            <li>소아와 함께 입국하실 경우, 가족관계 증명 서류를 요청받을 수 있습니다. 이는 가족 관계를 확인하기 위한 절차입니다.</li>
+            <li>따라서 출국 전에 영문 가족관계 증명서 또는 주민등록등본을 미리 준비해 주시기 바랍니다. 이 서류들은 입국 심사 시 원활한 진행에 도움이 될 것입니다.</li>
+        </ul>
+    </div>
+
+    <!-- 페이지 6: II. 여행 중 (현지에서) - 공항 도착 후 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h2>II. 여행 중 숙지사항</h2>
+
+        <h3>🛬 공항 도착 후, 헤매지 않고 시내까지</h3>
+        <div class="image-placeholder">
+              <img src="https://danangairport.vn/files/media/202411/Copy%20of%20Airport6325%20(1).jpg" alt="설명" style="width:50%; height:auto; object-fit:cover;">
+             </div>
+        <h4>입국 & 세관 </h4>
+        <ul>
+            <li>공항 내 표지판을 잘 보고 'Immigration'(입국심사), 'Baggage Claim'(짐찾기), 'Customs'(세관)순서로 이동합니다.</li>
+            <li>입국 심사 시 여권과 필요 서류(입국 카드 등)를 제출하고 간단한 질문(방문 목적, 체류 기간 등)에 답합니다.</li>
+             <li class="small-text">베트남은 별도 입국심사 카드가 없습니다</li>
+            <li>세관 신고(Customs)는 신고할 물품이 없다면 통과합니다.</li>
+            </ul>
+        <h4>짐 찾기(Baggage Claim) 및 수하물 문제 발생 시 대처</h4>
+        <ul>
+            <li>탑승했던 항공편 명이 표시된 컨베이어 벨트 앞에서 기다립니다. 짐이 정상적으로 나오면 찾아서 이동합니다.</li>
+            <li>만약, 짐이 나오지 않거나(지연 또는 분실) 파손된 경우 다음 절차에 따라 즉시 조치합니다:
+            <li><strong>신고 장소:</strong> 공항 내 '수하물 클레임 카운터(Baggage Claim Counter)' 또는 해당 항공사 직원에게 문의합니다.</li>
+            <li><strong>필요 서류:</strong> 여권과 보딩패스에 붙어있는 수하물표(배기지 태그)를 제시하고, <strong>수하물 사고 보고서(Property Irregularity Report, PIR)</strong>를 작성합니다. (영문 작성)</li>
+            </li>
+        </ul>
+        <h5>수하물 사고 보고서 작성 요령</h5>
+        <ul>
+            <li><strong>주소:</strong> 한국 영구 주소(Permanent Address)와 현지 체류 주소(Temporary/Local Address)를 정확히 기재합니다. 여러 숙소를 이용할 경우 모든 호텔 주소와 숙박일자를 함께 기재하는 것이 좋습니다.</li>
+            <li><strong>연락처:</strong> 현지에서 연락 가능한 번호 또는 한국 연락처(국가번호 +82 포함, 예: +82-10-1234-5678)를 기재합니다.</li>
+            <li><strong>가방 정보:</strong> 가방의 색상, 형태, 재질, 브랜드, 기타 특징(스티커, 액세서리 등)을 최대한 자세하게 기재해야 짐을 찾는 데 도움이 됩니다. 출발 전 수하물 사진을 찍어두면 유용합니다.</li>
+            <li><strong>처리 과정:</strong> 신고가 접수되면 항공사에서 수하물을 추적하며, 보통 2~3일 내외로 기재한 현지 주소로 배송해줍니다. (상황에 따라 더 오래 걸릴 수 있습니다.) 
+            
+        </ul>
+        <h4>시내 이동</h4>
+        <ul>
+            <li>공항에서 숙소까지 이동 방법을 미리 파악하고, 요금과 소요 시간을 비교하여 선택합니다.</li>
+            <li><strong>공항 픽업 차량 예약을 희망하시는 경우 출발 7일 전까지 담당자에게 문의 부탁드립니다.</strong></li>
+        </ul>
+    </div>
+
+    <!-- 페이지 7: 호텔 체크인, 현지 통신 준비 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h3>🏨 호텔 체크인, 빠르고 정확하게</h3>
+        <div class="image-placeholder">
+              <img src="https://www.naeiltour.co.kr/images/web/unnamed.png" alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+
+        <h4>체크인 기본 절차</h4>
+        <ol>
+            <li>호텔 로비의 프런트 데스크로 갑니다.</li>
+            <li>여권과 호텔 바우처를 제시합니다.</li>
+            <li>객실 키(카드 키 사용법 확인), 조식 시간 및 장소, 와이파이 아이디/비밀번호, 부대시설 이용 방법 등을 직원이 안내해 줄 때 잘 듣거나 메모합니다.</li>
+        </ol>
+
+        <h4>보증금(디파짓) 관련 정보</h4>
+        <ul>
+            <li>대부분 호텔에서 보증금(디파짓)을 신용카드 또는 현금으로 요구합니다.</li>
+            <li><strong>신용카드의 경우,</strong> 일정 금액을 가승인(실제 청구되지 않음)하며 체크아웃 시 문제없으면 취소됩니다.
+                <ul><li class="small-text">단, 객실 내 유료 서비스(미니바, 유료TV, 전화 등) 이용 시 이 카드로 비용이 청구될 수 있으니 유의해야 합니다.</li></ul>
+            </li>
+            <li><strong>현금 디파짓 시</strong> 영수증을 꼭 받아두었다가 체크아웃 시 돌려받습니다.</li>
+        </ul>
+<h4>체크인/체크아웃 시간과 짐 보관</h4>
+        <ul>
+            <li>체크인 시간(보통 오후 2-3시)보다 일찍 도착했거나 체크아웃(보통 오전 11-12시) 후 시간이 남을 경우, 대부분의 호텔에서 무료로 짐 보관(러기지룸) 서비스를 제공하니 문의해보세요.</li>
+            <li>방 배정 후 객실 상태(파손 여부, 청결 상태 등)를 간단히 확인하고 문제 시 바로 프런트에 알리는 것이 좋습니다.</li>
+        </ul>
+</div>
+ <!-- 페이지 7: 호텔 체크인, 현지 통신 준비 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h3>📱 현지 통신 준비: 유심(USIM) vs 이심(eSIM)</h3>
+        <div class="image-placeholder">
+              <img src="https://lh4.googleusercontent.com/proxy/siE-LUCIxU_QMprdvURM1ZFlbvRKi1UTr_VjwFPPOOds424KjYlMxmCvV9HHa2_bS-bC05DYuJilQlSCUOxdrBS1UnCe7dHuUXOZYC0DwZf_DAYV" alt="설명" style="width:100%; height:auto; object-fit:cover;">
+             </div>
+        <h4>선택 기준</h4>
+        <ul>
+            <li>여행 기간, 예상 데이터 사용량(지도 검색, SNS 등), 통화 필요 여부를 고려하여 요금제를 선택합니다.</li>
+        </ul>
+        <h4>로밍(Roaming)</h4>
+        <ul>
+            <li>별도의 심카드 교체 없이 국내에서 사용하던 번호와 요금제를 해외에서도 그대로 이용 (통신사 부가서비스)</li>
+            <li>한국 번호로 오는 전화/문자 수신이 중요하거나, 단기 체류 시 편리</li>
+            <li>데이터 사용량 및 요금 폭탄을 방지하기 위해 사전 로밍 요금제 가입 필수</li>
+            <li>하루 약 9,900원 ~ 16,500원 (일정 데이터 제공 후 속도제한 또는 차단)</li>
+        </ul>
+        <h4>유심(USIM)</h4>
+        <ul>
+            <li>기존 심카드를 빼고 현지 유심을 끼우는 방식</li>
+            <li>폰 기종에 맞는 유심 크기를 확인해야 함</li>
+            <li>베트남남 7일 10GB 기준 약 1만원 ~ 3만원</li>
+            <li>한국 번호 사용 불가(별도 보관 필요)</li>
+        </ul>
+        <h4>이심(eSIM)</h4>
+        <ul>
+            <li>물리적 심카드 없이 QR코드 스캔 등으로 개통</li>
+            <li>듀얼 심 활용 가능(한국 번호와 현지 번호 동시 사용)</li>
+            <li>본인 폰이 eSIM을 지원하는지 확인 필수(보통 최신기종만 가능)</li>
+            <li>글로벌 eSIM 7일 1GB 기준 약 8,000원 ~ 15,000원</li>
+        </ul>
+    </div>
+    
+    <!-- 페이지 8: 현지 통신 준비 (계속), 안전한 여행 -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+                <h3>🛡️ 안전한 여행을 위한 주의사항</h3>
+        <div class="image-placeholder">
+              <img src="https://thumbnail.10x10.co.kr/webimage/image/basic600/287/B002873502.jpg?cmd=thumb&w=400&h=400&fit=true&ws=false" alt="설명" style="width:70%; height:auto; object-fit:cover;">
+             </div>
+
+        <h4>소지품 관리 및 도난 사고 발생 시 대처</h4>
+        <ul>
+            <li>여행 중에는 항상 소지품 관리에 유의해야 합니다.</li>
+            <li>만약 소지품 도난 사고가 발생하면:
+                <ul>
+                    <li>즉시 가까운 현지 경찰서로 가서 <strong>폴리스 리포트(도난 증명서, Police Report)</strong>를 발급받아야 합니다.</li>
+                    <li>이 서류는 여행자 보험 청구 시 필요합니다.</li>
+                    <li>핸드폰, 카메라, 노트북 등 전자제품 도난 신고 시에는 제품 고유번호(IMEI, 시리얼 넘버)가 필요한 경우가 많으므로, 미리 준비해둔 정보를 활용합니다.</li>
+                </ul>
+            </li>
+        </ul>
+        <h4>현지 비상 연락 방법 숙지</h4>
+        <ul>
+            <li>위급 상황 발생에 대비하여 <strong>대한민국 대사관 또는 총영사관 연락처, 외교부 영사콜센터 번호</strong> 등을 미리 저장해두는 것이 좋습니다.</li>
+            <li>현지에서 도움이 필요할 경우를 대비하여 여행사 담당자의 이메일 주소를 꼭 숙지합니다.</li>
+            <li>주요 국가별 대사관 연락처와 현지 긴급 연락처(경찰, 응급의료 등)도 함께 저장해두면 좋습니다.</li>
+        </ul>
+    </div>
+
+    <!-- 페이지 9: III. 여행 후 (귀국 후 처리) -->
+    <div class="page">
+        <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더" class="header-logo">
+        <h2>III. 여행 후 처리사항 안내</h2>
+
+        <h3>📄 여행자 보험금 청구 (필요시)</h3>
+        <p>여행 중 사고(도난, 질병, 상해 등)로 인해 보험 처리가 필요한 경우, 귀국 후 해당 담당자에게 연락하여 보험금 청구 절차를 안내받습니다.</p>
+        <p>보험 청구전 현지에서 발급받은 폴리스 리포트, 병원 진료 영수증 및 진단서, 물품 구매 영수증 등 필요한 증빙 서류를 미리 준비합니다.</p>
+
+        <h3>🛄 항공사 수하물 문제 관련 보상 신청 (해당 시)</h3>
+        <p>수하물 지연, 파손, 분실 등으로 인해 항공사에 보상을 신청해야 할 경우, 여행 중 받은 수하물 사고 보고서(PIR), 배기지 태그, 관련 물품 구매 영수증 등을 근거로 해당 항공사에 문의하여 절차를 진행합니다.</p>
+
+        <h3>🌟 항공 마일리지 적립 확인 및 누락 시 처리</h3>
+        <p>출발 전 가입했거나 체크인 시 요청한 항공 마일리지가 정상적으로 적립되었는지 확인합니다.</p>
+        <p>누락된 경우, 항공사 규정에 따라 이티켓과 탑승권(보딩패스) 사본 등으로 추후 적립을 신청할 수 있으므로 관련 서류를 일정 기간 보관하는 것이 좋습니다.</p>
+
+    </div>
+
+</body>
+</html>
