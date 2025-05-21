@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>푸꾸옥 추천 맛집</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+        }
+        header img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .main-content-wrapper {
+            padding: 10px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        h2 { 
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .restaurant-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .restaurant-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .image-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .image-container img {
+            display: block !important;
+            width: calc(50% - 5px) !important; 
+            height: auto !important;
+            aspect-ratio: 4 / 3 !important;
+            object-fit: cover !important;
+            border-radius: 0 !important;
+            border: none !important;
+            background-color: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .restaurant-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.25em;
+            color: #2980b9;
+        }
+        .restaurant-info {
+            flex-grow: 1;
+        }
+        .restaurant-info p {
+            font-size: 0.88em;
+            line-height: 1.55;
+            color: #495057;
+            margin-bottom: 6px;
+        }
+        .restaurant-info .info-label {
+            font-weight: 600;
+            color: #343a40;
+            margin-right: 5px;
+        }
+        .restaurant-info .description {
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .map-link {
+            font-size: 0.8em;
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+        .map-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .main-content-wrapper { padding: 20px; }
+            .container { padding: 25px; }
+            h1 { font-size: 2.2em; margin-bottom: 35px; }
+            h2 { font-size: 1.8em; padding-bottom: 10px; margin-top: 45px; margin-bottom: 25px; }
+            .restaurant-list { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .restaurant-card h3 { font-size: 1.4em; }
+            .restaurant-info p { font-size: 0.92em; }
+            .restaurant-info .description { font-size: 0.95em; }
+        }
+        @media (min-width: 1024px) {
+        }
+
+        /* Print styles are kept from the original for consistency, but may need adjustment for new content length */
+        @media print {
+            * {
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            html, body { 
+                width: 100% !important;
+                height: auto !important; 
+                background-color: #fff !important; 
+            }
+            html {
+                font-size: 9pt !important;
+                line-height: 1.25 !important;
+            }
+            body {
+                font-family: 'NanumGothic', '나눔고딕', sans-serif !important;
+                color: #000 !important;
+                padding-top: 2.5cm !important; 
+                padding-left: 0.7cm !important;
+                padding-right: 0.7cm !important;
+                padding-bottom: 0.7cm !important;
+            }
+            header {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0.7cm !important; 
+                right: 0.7cm !important;
+                height: 2.5cm !important;
+                background-color: #fff !important; 
+                z-index: 99999 !important; 
+                border-bottom: none !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 0.1cm 0 !important; 
+            }
+            header img {
+                display: block !important;
+                max-width: 100% !important;
+                max-height: calc(2.5cm - 0.2cm) !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+            }
+            .main-content-wrapper,
+            .container {
+                width: 100% !important;
+                max-width: 100% !important;
+                background-color: #fff !important; 
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                border: none !important;
+            }
+            section + section {
+                page-break-before: always !important;
+            }
+            h1, h3 {
+                color: #000 !important;
+                page-break-after: avoid !important;
+                clear: both !important; 
+            }
+            h1 {
+                font-size: 15pt !important;
+                text-align: left !important;
+                border-bottom: none !important;
+                margin-top: 0.3cm !important; 
+                margin-bottom: -2.5cm !important;
+                padding: 0 0.2cm 1.5mm 0.2cm !important;
+            }
+            h2 {
+                font-size: 13pt !important;
+                border-bottom: none !important;
+                margin-top: 2.3cm !important;
+                margin-bottom: -2cm !important;
+                padding: 0 0.2cm 1mm 0.2cm !important;
+                position: relative !important;
+                z-index: 10 !important;
+                page-break-after: avoid !important;
+                color: #6d64e7 !important;
+            }
+            h3 {
+                font-size: 10pt !important;
+                margin-top: 0.2cm !important;
+                margin-bottom: 0.15cm !important;
+                padding: 0 !important; 
+            }
+            .restaurant-list {
+                grid-template-columns: 1fr !important;
+                gap: 0.3cm !important;
+                list-style: none !important; 
+            }
+            .restaurant-card {
+                page-break-inside: avoid !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0.2cm !important;
+                margin-bottom: 0.3cm !important;
+                overflow: hidden !important; 
+                width: 100% !important; 
+            }
+            .image-container {
+                display: flex !important;
+                gap: 3px !important;
+                margin-top: 2.2cm !important;
+                margin-bottom: 0.2cm !important;
+                overflow: hidden !important;
+                width: 100% !important; 
+            }
+            .image-container img {
+                display: block !important; 
+                width: calc(50% - 1.5px) !important;
+                height: auto !important;
+                aspect-ratio: 16 / 9 !important;
+                object-fit: cover !important;
+                border-radius: 0 !important;
+                border: none !important;
+                background-color: #fff !important;
+            }
+            .restaurant-info p {
+                font-size: 8pt !important;
+                line-height: 1.2 !important;
+                margin-bottom: 1mm !important;
+                color: #000 !important;
+                word-wrap: break-word !important; 
+            }
+            .restaurant-info .info-label {
+                font-weight: 600 !important; 
+                color: #343a40 !important; 
+                margin-right: 3px !important;
+            }
+            .restaurant-info .description {
+                font-size: 8pt !important;
+                margin-top: 0.15cm !important;
+                color: #333 !important; 
+            }
+            .map-link {
+                font-size: 0.8em !important; 
+                color: #000 !important; 
+                text-decoration: underline !important;
+                margin-left: 3px !important;
+                word-break: break-all !important; 
+            }
+            img[src^="https://placehold.co"],
+            img[src^="https://via.placeholder.com"] { /* Adjusted for new placeholder */
+                border: 1px dashed #ccc !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content-wrapper">
+        <header>
+            <img src="https://www.naeiltour.co.kr/images/web/%ED%97%A4%EB%8D%94%20(2).png" alt="내일투어 헤더">
+        </header>
+        <div class="container">
+            <h1>내일투어 엄선 푸꾸옥 추천 맛집</h1>
+
+            <section id="north-phuquoc-restaurants">
+                <h2>1. 북부 지역 맛집</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://blog.kakaocdn.net/dn/nsIli/btsrSL2E8oE/DQbKLJSBVZVSes9uKjaXv0/img.jpg" alt="Garden Coffee 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrjOz4019EGm7PvZpM3-uA0AB_F7EGC_rz-sErrsOueiuCn1d_iUaGKZcZx-Pl1kaqeVlPqA-58QbHrsIe5Dtneo-yy6972QopADKjMaC1nltgpYPyPOaGUSLrGVxqwzMW1mhvNxw=s680-w680-h510-rw" alt="Garden Coffee 사진 2">
+                        </div>
+                        <h3>1. 가든커피 (Garden Food, Coffee & Spa)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 7WPJ+6WW, ĐT45, Cửa Dương, Phú Quốc, Kiên Giang, 베트남, Mövenpick Resort 인근 <a href="https://www.google.com/maps/search/?api=1&query=Garden+Coffee+Phu+Quoc+DT45+Mövenpick+Resort" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오전 6:30~오후 9:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 쌀국수, 볶음면, 해산물 볶음밥 등 다양한 현지식</p>
+                            <p class="description"><span class="info-label">설명:</span> 모벤픽 리조트 바로 옆에 위치, 여행자와 현지인이 모두 즐겨 찾는 ‘조식 겸 브런치 명소’다. 2025년 기준 실내외 좌석 모두 넓고 쾌적, 고즈넉한 정원 분위기와 합리적 가격, 신선한 베트남식 쌀국수·볶음면·해산물볶음밥이 인기. 아침엔 커피와 함께 쌀국수를, 점심엔 각종 씨푸드 볶음밥·반미도 즐길 수 있다. 로컬 분위기와 함께 깔끔함, 친절한 서비스, 모벤픽 투숙객이 자주 이용하는 곳으로 평판이 꾸준히 좋다. 최근에는 디저트·스무디도 인기가 많아졌다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipP6sd5ndi4YsXZVlOo0EpFsGsv51gXBOoTz9CC5=s680-w680-h510-rw" alt="껌냐 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrg2KpxLHCbTWh6b-OmHgNE3pJ1i2eFYcu5VAxyKNvV8w1Znk44JieszsaZ8rW9i42ELtG60uLVw1nvBawUA3pej5tzNgVXxJBzhrTa6BJWMbktIQYZi_gMWuzw1EchvjDxwjJq=s680-w680-h510-rw" alt="껌냐 사진 2">
+                        </div>
+                        <h3>2. 껌냐 (Cơm Nhà Phú Quốc)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> SA-01-23 & SA-01-24 Grand World, Gành Dầu, Phú Quốc, Kiên Giang, 베트남 Grand World 내, sông Venice 지역 <a href="https://www.google.com/maps/search/?api=1&query=Bếp+Nhà+Grand+World+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오전 8:00~오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 베트남 가정식 (껌승, 분짜, 분리우 등)</p>
+                            <p class="description"><span class="info-label">설명:</span> 그랜드월드 중심에 위치한 정통 베트남 가정식 레스토랑. 실내 인테리어는 전통 가옥 스타일로 꾸며져 있어 현지 분위기를 물씬 느낄 수 있다. 2025년에도 대표 가정식 메뉴(껌승·분짜·분리우 등)가 신선한 재료로 제공된다. 현지인과 관광객 모두 만족, 대규모 단체 방문도 많은 곳. 식사시간 대기 줄이 있을 수 있으나, 회전율이 높다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipPdA5WIpnwA_6wEeBcTKMroneJOF6S5WVsDSJnd=s680-w680-h510-rw" alt="마담콴 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nq75UTxeKkepUjarTIMiLn71UIVeOjOqdI8Jm80Jkac4QailmQibvMfLA77Xws3lmqabT09E6uzowKpmnVvn3DFOsOXOlowewtw6WFOOZxTP10LuQiUrokaPVFA4rVtdcCvjp7U=s680-w680-h510-rw" alt="마담콴 사진 2">
+                        </div>
+                        <h3>3. 마담콴 (Madam Khánh)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> SA01-28, Grand World, Gành Dầu <a href="https://www.google.com/maps/search/?api=1&query=Madam+Khánh+SA01-28+Grand+World+Gành+Dầu+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 08:00~22:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 신선한 해산물 요리 (새우, 게, 조개, 생선 등), 기본구이, 버터구이, 해산물볶음, 씨푸드 핫팟</p>
+                            <p class="description"><span class="info-label">설명:</span> 푸꾸옥 북부 해변가 신선 해산물 전문점. 2025년 기준 어부 직송 해산물(새우·게·조개·생선 등)을 저렴하고 넉넉한 양으로 즐길 수 있다. 기본구이, 버터구이, 각종 해산물볶음, 씨푸드 핫팟 등 메뉴가 다양하다. 넓고 시원한 실내, 친근한 서비스, 가족·단체 손님에게 강추되는 곳. 포장·배달도 가능하다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqqr3FefECtfp34q90honoBFiUfcc-3r4hM07CuFt4PS3i9m8bN3xWZg93-Q9vG9wp2bq1e1bD7chi1iwhqV1lBvBETZEAElp0Td6ujudYOnhOrm_v3q479c0RQm9C7ykvhetg=s680-w680-h510-rw" alt="Nhà hàng Vua Hải Sản 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrQi4UdDfOBPIAIVKiMFMVpWOA1ld3HmXF9zJFqixvv0PJWhvY0-tB-egmwdHnC6u9jHuFdRiFWgzZAbkoKJfr0BXN3XNEXFWnYyVRu80NLuG5AnKB3anxQatAgA1VhtFIip00=s680-w680-h510-rw" alt="Nhà hàng Vua Hải Sản 사진 2">
+                        </div>
+                        <h3>4. 냐 항 부아 하이 산 (Nhà hàng Vua Hải Sản)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> Bãi Dài, Shop House TM04A-02,03,04,05, Grand World, Gành Dầu, Phú Quốc, Kiên Giang 92512 베트남 <a href="https://www.google.com/maps/search/?api=1&query=Nhà+hàng+Vua+Hải+Sản+TM04A-05+Vin+Grand+World+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span>오후 1:00~오전 12:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 해산물 요리 (구이, 찜, 튀김, 탕 등)</p>
+                            <p class="description"><span class="info-label">설명:</span> 직역하면 ‘해산물의 왕’이라는 이름답게, 푸꾸옥 북부 최대급 해산물 식당 중 하나. 2025년에도 늘 신선한 해산물과 다양한 조리법(구이·찜·튀김·탕 등)으로 손님을 끌어모은다. 대규모 연회, 가족 모임, 현지인 회식 등 단체 수용이 가능하다. 모든 메뉴에 고급 식자재 사용, 가격은 중상급이나 품질 대비 만족도가 높다. 분수쇼 감상 명당.</p>
+                        </div>
+                    </div>
+                       <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipO0LoN-ay0ZqsZ-bMosuntU3--hCE0tt8cysDTX=s680-w680-h510-rw" alt="까미아 레스토랑 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrPJR5AL9vr6OkMjo-SdZxw-jUGVDituP-_JqfObapq_K0G4RCIJhStjiqEnZ5uIL0xtmG6q1Wai0cyOLbEiweX9WRvvKt_GQEHmMjy2QK-sjss9v6KQrhRGXq7Wf1vfp-LoCTQ=s680-w680-h510-rw" alt="까미아 레스토랑 사진 2">
+                        </div>
+                        <h3>5. 까미아 레스토랑 (Camia Restaurant)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> Lot 3, Ong Lang, Phu Quoc Island <a href="https://www.google.com/maps/search/?api=1&query=Camia+Restaurant+Lot+3+Ong+Lang+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오전 11:00~오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 베트남, 서양식, 이탈리안 퓨전, 채식, 글루텐프리, 어린이 메뉴</p>
+                            <p class="description"><span class="info-label">설명:</span> 퓨전 레스토랑으로, 베트남·서양식·이탈리안 메뉴까지 폭넓게 준비되어 있다. 2025년에는 채식, 글루텐프리, 어린이 메뉴가 추가되어 가족 단위 이용객이 더욱 늘었다. 깔끔하고 모던한 인테리어, 다양한 와인·칵테일도 제공한다.</p>
+                        </div>
+                    </div>
+                     <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipOMEgwCn5SM7kpOfVcJIjlCYXUkftRKBmWyoDFm=s680-w680-h510-rw" alt="선셋스토리 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nroAdMSOqGLSctwUHseh5jHUJUp_2ZbL4A_BtG_oy3zOyB0hYXEINzrfd_JUbdBvgObWJhMuFyTvWIYC3nLLUUskwOvx1wWxoxlg2zSZ50lgQ5RYhw_RVG7c9Z4Ul09CGCJ-UdTWNaTbkgP=s680-w680-h510-rw" alt="선셋스토리 사진 2">
+                        </div>
+                        <h3>6. 선셋스토리 (Nhà hàng Sunset Story)</h3>
+                        <div class="restaurant-info">
+                           <p><span class="info-label">주소:</span> Tổ 1, Ấp Gành Dầu, Phú Quốc, Kiên Giang 91000 베트남 <a href="https://www.google.com/maps/search/?api=1&query=Sunset+Story+Restaurant+Ganh+Dau+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 11:00~22:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 칵테일, 파스타, 베트남식 해산물 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 북부 대표 ‘분위기 맛집 카페’. 해변 일몰 뷰와 함께하는 칵테일, 파스타, 베트남식 해산물 요리가 시그니처다. 2025년에는 라이브뮤직·포토존 등 엔터테인먼트 요소 강화, 인플루언서들이 추천하는 북부 데이트 명소. 메뉴도 지속적으로 업그레이드 중.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <section id="central-phuquoc-restaurants">
+                <h2>2. 중부 지역 맛집</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipNaKECP5lHsgocorn2bOTq0OI_7xWLXRzvuhhUA=s680-w680-h510-rw" alt="똠하우스 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4noSuHCc3POa789JlgfOfW53FzyBISFM3cuo7DwKYIEyX3ZhqqmgbosFBBjgafrRLeGxrjqxCN2kZPszWXT8-9NObJhOtVFVx0LGZEadBn3XvUouuxNqQVoRACpuFTeL_YYn1Din0w=s680-w680-h510-rw" alt="똠하우스 사진 2">
+                        </div>
+                        <h3>1. 똠하우스 (Tôm House)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 1D Đường Võ Thị Sáu, Dương Đông, Phú Quốc, Kiên Giang 91000 베트남<a href="https://www.google.com/maps/search/?api=1&query=Tôm+House+1D+Võ+Thị+Sáu+Dương+Đông+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 1D Đường Võ Thị Sáu, Dương Đông, Phú Quốc, Kiên Giang 91000 베트남/p>
+                            <p><span class="info-label">주요 메뉴:</span> 해산물 그릴, 볶음, 생선요리, 나물무침</p>
+                            <p class="description"><span class="info-label">설명:</span> 씨푸드 전문점으로, 2025년에도 ‘최신식 오픈키친’, 깔끔한 분위기, 바닷가 뷰 등 복합적인 강점으로 현지인·관광객 모두에게 인기다. 해산물 그릴·볶음, 신선한 생선요리, 각종 나물무침 등 메뉴가 다양하다. 저녁엔 분위기가 좋아 연인·가족 모임이 많고, SNS 인증샷 장소로도 인기다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipNLO8it1s9oJNWtksClx8T-lwJn-uqBwYV2jMW9=s680-w680-h510-rw" alt="메오키친 사진 1">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipP7uAbbSwSt_hnqxHpJ6jK0tKS3iVptjoEPXuQa=s680-w680-h510-rw" alt="메오키친 사진 2">
+                        </div>
+                        <h3>2. 메오키친 (MEO Kitchen)</h3>
+                        <div class="restaurant-info">
+                           <p><span class="info-label">주소:</span>  MEO KITCHEN, 126 Đường Trần Hưng Đạo, Dương Đông, Phú Quốc, Kiên Giang 92000 베트남 <a href="https://www.google.com/maps/search/?api=1&query=MEO+Kitchen+126+Trần+Hưng+Đạo+Dương+Đông+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 06:30~22:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 현지 요리, 볶음요리, 국수</p>
+                            <p class="description"><span class="info-label">설명:</span> 로컬 분위기가 살아 있는 중식 레스토랑. 2025년엔 라운지에서 20% 할인 쿠폰을 제공, 여행자들 사이에서 ‘가성비 맛집’으로 입소문. 분위기는 활기차고, 다양한 볶음요리·국수·현지식 메뉴, 음료가 준비되어 있다. 배달 서비스, 예약제도 도입.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipNEuL7V2MMIulxC_oHolLcIcHgIS8qG8mUrV-J8=s680-w680-h510-rw" alt="안바 카페 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nriv67U_UL_3TPtDqUoQ2OQ9-2Y5RS5hwxHA4cIzPXtZUoD3P5njLu-Sv0MVelzh4vdhxqEZ6Iu7AfNB49DY-Ohk-FoZMVJJnzaFgpcoo8ST8aPa6hGDs7lF1M9WXCxSZL64xChBA=s680-w680-h510-rw" alt="안바 카페 사진 2">
+                        </div>
+                        <h3>3. 안바 카페 (An Ba Cafe)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 131 Đường Trần Hưng Đạo, Dương Đông, Phú Quốc, Kiên Giang, 베트남 <a href="https://www.google.com/maps/search/?api=1&query=An+Ba+Cafe+131+Trần+Hưng+Đạo+Dương+Đông+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span>오전 7:30~오후 9:30</p>
+                            <p><span class="info-label">주요 메뉴:</span> 커피, 코코넛라떼, 과일주스, 디저트, 브런치, 베이커리</p>
+                            <p class="description"><span class="info-label">설명:</span> 중부 대표 로컬 커피 전문점. 2025년 커피·코코넛라떼·과일주스·디저트 등 메뉴가 다양하다. 실내외 모두 조용하고 분위기 좋아, 현지인과 여행객의 휴식처로 인기. 브런치, 베이커리류도 맛있다는 평가.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4noMwoqgDN3JgbOVoljfypAAK9lmA3oHK2OGc6fxFDRTx79yS52Cdi9L5XuEng_97h7kSrk-8hKCA90F2pbslIixhLAAXmI-5ytG2h76X2FF9HjAVW4Tw-feko8X080vzqavApw=s680-w680-h510-rw" alt="양자강 푸꾸옥 사진 1">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipPR1UiX1ZkawMEBxLBLxa8hHA0eSkYnHy30_4j3=s680-w680-h510-rw" alt="양자강 푸꾸옥 사진 2">
+                        </div>
+                        <h3>4. 양자강 푸꾸옥 (Yangtze River Phu Quoc)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span>  79 Đường Trần Hưng Đạo, Dương Đông, Phú Quốc, Kiên Giang, 베트남 <a href="https://www.google.com/maps/search/?api=1&query=Yangtze+River+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 	오전 10:00~오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 간짜장, 삼선짬뽕 등 한국식 중화요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 한국인 셰프가 직접 운영, 간짜장·삼선짬뽕 등 한국식 중화요리를 제대로 맛볼 수 있다. 2025년에도 한인 관광객·현지 교민에게 인기가 많다. 고급스러운 인테리어, 위생, 빠른 서비스, 푸짐한 양이 강점. 한국인의 입맛에 맞게 매운맛 조절 가능.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npCwlkYYRNN25yr3KCYd1Js7OgnexEbOoW2BrU977KGtPEkaHuIVAJHlEm7ga3lCoisWs_VpkY5FNawZFKUTk1BC_8FN_k5bPREd5Z6zVMWfdC0My9psNYDP8dxutWEvZF2m3DbSA=s680-w680-h510-rw" alt="Pad Thai 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npWJsAI_vkdoUwh2sMzyaT11Pbo1-LU0XOasaB51KXtbB48GlE-vX-7WFHnNZVsQMef2toHB8SNz9x24CaHk8YGVpHcFrht60zP0ApVZ_hzW8363pZAXkWTlnXLvaJuBKSROtpz=s680-w680-h510-rw" alt="Pad Thai 사진 2">
+                        </div>
+                        <h3>5. Pad Thai (팟타이)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 90 Đường Bạch Đằng, TT. Dương Đông (야시장 내) <a href="https://www.google.com/maps/search/?api=1&query=Pad+Thai+90+Bạch+Đằng+Dương+Đông+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오후 5:00~11:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 팟타이 (태국식 볶음국수)</p>
+                            <p class="description"><span class="info-label">설명:</span> 야시장 명물 ‘팟타이’ 전문 포장점. 2025년 기준 저녁마다 줄이 긴데, 즉석에서 조리하는 태국식 볶음국수 맛과 불향이 일품이다. 가볍게 테이크아웃, 야시장 구경하며 먹기 딱 좋은 메뉴.</p>
+                        </div>
+                    </div>
+                       <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqpBIwHvsWMjkoLDBJ2mRpHd5fKjEizrwD9Q1LU6nKdvjB1VVeX8ru9WIZ1SEiTaHS5gpuM5_fS_ObBObVZTy9M5LR6N-j_vslZNMNSrzmu5WOuJYX169BY36cBIFhqOB9_LE0o=s680-w680-h510-rw" alt="Ốc Nhi (옥니 사이공) 사진 1">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipNGn34aIqJAWA1sqZQoxl0aIj4OFSjg-Ej2na4=s680-w680-h510-rw" alt="Ốc Nhi (옥니 사이공) 사진 2">
+                        </div>
+                        <h3>6. 옥니 사이공 (Ốc Nhi) </h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 363 Đường Nguyễn Trung Trực, Dương Đông, Phú Quốc, Kiên Giang, 베트남 <a href="https://www.google.com/maps/search/?api=1&query=Ốc+Nhi+Saigon+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 363 Đường Nguyễn Trung Trực, Dương Đông, Phú Quốc, Kiên Giang, 베트남</p>
+                            <p><span class="info-label">주요 메뉴:</span> 해산물 BBQ, 샤브샤브, 각종 안주</p>
+                            <p class="description"><span class="info-label">설명:</span> 해산물 BBQ·샤브샤브·각종 안주류가 인기. 2025년엔 넓고 깨끗한 실내, 다양한 메뉴, 신선한 해산물로 현지 단체 회식 장소로도 각광받고 있다. 야시장과 가까워 접근성이 좋으며, 늦은 시간까지 영업한다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="south-phuquoc-restaurants">
+                <h2>3. 남부 지역 맛집</h2>
+                <div class="restaurant-list">
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipO_Hc_WKBnKO95Ulf8m4m-Hi2IjSlZmhXzfbX8=s680-w680-h510-rw" alt="껌자딘 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqJ5amXrnk9sXUMkMJ8rFOXpNpi7gjbniF_X8VXrLnNozJ-3Pm6INBqkZAT3qw7NIig8ISiC87HAdyGxeRDXwmS0QKQMhHxe-gSehUIOufOodfnOhzJo0D09NyESOEcNiSL87k=s680-w680-h510-rw" alt="껌자딘 사진 2">
+                        </div>
+                        <h3>1. 껌자딘 (Com Gia Dinh)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> Ama 17 đường Amarine, khu phố 6, Phú Quốc, Kiên Giang 673966 베트남 <a href="https://www.google.com/maps/search/?api=1&query=Com+Gia+Dinh+Sunset+Town+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span>오전 9:00~오후 9:00음</p>
+                            <p><span class="info-label">주요 메뉴:</span> 베트남 전통 가정식 (볶음밥, 국수, 볶음요리, 생선구이 등)</p>
+                            <p class="description"><span class="info-label">설명:</span> 선셋타운 대표 전통 가정식 맛집. 2025년에는 내부가 현대적으로 리뉴얼되어 쾌적하고, 메뉴 구성도 다양해졌다. 베트남식 볶음밥, 국수, 볶음요리, 생선구이 등 집밥 같은 정갈한 한상차림 제공. 가격 합리적, 가족, 단체, 현지인 모두 즐겨 찾는다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipPy54ZiVz8m66g7azeVFkX_2umKcuBMLqIMJn4C=s680-w680-h510-rw" alt="com tho tay cam 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npBXLQUY57Q1CsGATGh4lgD9UnPOffCL0cz5WmjkS2aAkNMY-T5awa5yspomAVzwgJNKvtKZz9WGC_B1EZ68TPtkEK4QEUlWe12madxCKn-i6HlbfY5qSqyZy9W5Nk13DzBkjNk=s680-w680-h510-rw" alt="com tho tay cam 사진 2">
+                        </div>
+                        <h3>2. 깜또씨푸드 (com tho tay cam) </h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> Shophouse R171, Bãi Khem, An Thới, Phú Quốc, Kiên Giang 92513 베트남 <a href="https://www.google.com/maps/search/?api=1&query=com+tho+tay+cam+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오전 11:00~오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 신선한 해산물 요리, 라이브 씨푸드 쇼케이스</p>
+                            <p class="description"><span class="info-label">설명:</span> 신선한 해산물 요리를 합리적인 가격에 즐길 수 있는 곳. 2025년에는 테이블별 라이브 씨푸드 쇼케이스 도입, 직접 고른 해산물을 바로 요리해준다. 양도 푸짐하고, 포장·배달도 가능. 점심·저녁 시간에 현지인과 관광객 모두 붐빈다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrMQXpOCiU4X3QYSFRjQ8FVc8ALQwbceEbfu5pyKfBHKLSKEiR2vHBU3PrSA3tRDQM9DbquVSgm_RGmBZFWkI7w1Zf8eEYONUdPaNwpHID77CJjkzID6OZKnz9Lg1Fg_r_vt8Na=s680-w680-h510-rw" alt="KAISUN RESTAURANT 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrVjABFBqJAeDRcojxVPtHbgl9HR5X6BkqsxFfAaJfNdAzoIYptSBXV4Nd7ND7IKMsq3dv6vebWVi7skmCHyOKVK6tFN8ocOsogPM5t0eM-QgIWpdQR61-843gz5Xraucpllxhg=s680-w680-h510-rw" alt="KAISUN RESTAURANT 사진 2">
+                        </div>
+                        <h3>3. KAISUN RESTAURANT</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span>  Khem Beach, An Thới, Phú Quốc, Kiên Giang 922288 베트남 <a href="https://www.google.com/maps/search/?api=1&query=KAISUN+RESTAURANT+Phu+Quoc+beach" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오전 10:00~오후 11:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 유럽식, 베트남식 요리, 셰프 특선 요리, 와인</p>
+                            <p class="description"><span class="info-label">설명:</span> 해변가에 위치한 로맨틱 디너 명소. 2025년에는 셰프 특선 요리와 해변 일몰 뷰, 분위기 있는 음악이 더해져 커플·신혼여행객, 기념일 저녁 장소로 인기다. 유럽식·베트남식 메뉴 모두 수준 높고, 서비스·청결이 강점. 와인 리스트도 충실하다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipNfo-ItvFC39ToOhk24qVUqyjQjrUrsHFGh1dVV=s680-w680-h510-rw" alt="CA VANG 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npUlrDOUmH9LhD4cPhGIGXYSmcOguSn-_qTPNRrr6T2QpbVCioVUT7Rg3A_ykuoHKvvcqxdPlttid4eqAjmsI7zDS2zrfi_qN8OuUZAUsfIin1m6b2EDnHhRN3aewRoy1dQe_M4=s680-w680-h510-rw" alt="CA VANG 사진 2">
+                        </div>
+                        <h3>4. 카방 (CA VANG)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> Shophouse R169, Bãi Khem, An Thới, Phú Quốc, Kiên Giang 92513 베트남 <a href="https://www.google.com/maps/search/?api=1&query=CA+VANG+Restaurant+New+World+Resort+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 오전 11:00~오후 10:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 쌀국수, 춘권, 치킨 등 베트남 인기 메뉴</p>
+                            <p class="description"><span class="info-label">설명:</span> 뉴월드 리조트 앞의 로컬 맛집. 쌀국수, 춘권, 치킨 등 베트남 인기 메뉴를 한 번에 맛볼 수 있다. 2025년 기준, 합리적 가격, 빠른 서비스, 신선한 재료, 가족 단위 손님이 많다. 조식, 점심, 야식 모두 추천된다.</p>
+                        </div>
+                    </div>
+                    <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4noYlQwyF58HvKYWh-9uCEAY56OfixPVOsMw7Oxz6QJ5b4LUNkpA6W-RawhovSa5pcf5uYhlHvziLGdayNivH3bJtklOASPo9qV4BJr2jbkTtX06FbwNuezYtM3p7gH3FRAobOYR=s680-w680-h510-rw" alt="와우 꾸에 떠이 사진 1">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nph4b5tuqj2De7DOilm_tvYB0KEtiZ9jR_9jcKQ1nvoai2MefOok_Cb09hBusLMlt98-5Wok-Y08i6zdXvs2X-PjZ2Ds0t5FKUs4V129cxXG3J3b2or0K5n7Ig84TnTW0F4RcZcaw=s680-w680-h510-rw" alt="와우 꾸에 떠이 사진 2">
+                        </div>
+                        <h3>5. 와우 꾸에 떠이 (WOW QUÊ TÔI)</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 22J4+MC3, An Thới, Phú Quốc, Kiên Giang, 베트남 <a href="https://www.google.com/maps/search/?api=1&query=WOW+QUÊ+TÔI+Sunset+Town+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span> 22J4+MC3, An Thới, Phú Quốc, Kiên Giang, 베트남</p>
+                            <p><span class="info-label">주요 메뉴:</span> 라이브 랍스터, 게, 조개구이, 해산물 바비큐</p>
+                            <p class="description"><span class="info-label">설명:</span> 선셋타운 대표 해산물 맛집. 2025년에도 라이브 랍스터, 게, 각종 조개구이, 해산물 바비큐 등 다양한 메뉴가 인기다. 실내외 테이블, 바다 전망, 친근한 서비스, 포장·배달 모두 가능. 단체 손님 예약도 많다.</p>
+                        </div>
+                    </div>
+                     <div class="restaurant-card">
+                        <div class="image-container">
+                            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nocEck7HVxwYjdfKOt0WVo975dZ16aRR-jqvhL3uPMyQlfKDV_xyPc4kckkTWBGMC4qJ3CB50aKryvDWXvVywJYTmrLd7YxFsHArCgiLVbhRYWbxlry_ca-0BQp1ita78pKZAULdQ=s680-w680-h510-rw" alt="Phuong Hoang 해산물 레스토랑 사진 1">
+                            <img src="https://lh3.googleusercontent.com/p/AF1QipN-PCckvO68R6wZ62ECHDENSoVNndhV5qE360YZ=s680-w680-h510-rw" alt="Phuong Hoang 해산물 레스토랑 사진 2">
+                        </div>
+                        <h3>6. Phuong Hoang Seafood Restaurant
+</h3>
+                        <div class="restaurant-info">
+                            <p><span class="info-label">주소:</span> 127G Đường Trần Hưng Đạo, Dương Đông, Phú Quốc, Kiên Giang 92500 베트남 <a href="https://www.google.com/maps/search/?api=1&query=Phuong+Hoang+Seafood+Restaurant+King+Kong+Mart+Phu+Quoc" target="_blank" class="map-link">(지도 보기)</a></p>
+                            <p><span class="info-label">영업시간:</span>오전 10:00~오후 11:00</p>
+                            <p><span class="info-label">주요 메뉴:</span> 다양한 해산물, BBQ, 구이, 탕 요리</p>
+                            <p class="description"><span class="info-label">설명:</span> 킹콩마트 인근에 위치한 현지인 추천 해산물 전문 로컬 맛집. 2025년엔 다양한 해산물, BBQ, 구이, 탕 요리가 넉넉하게 제공된다. 가격 대비 품질이 우수하며, 현지 분위기 그대로 경험할 수 있다. 오랜 전통의 로컬 맛집으로 손꼽힌다.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
